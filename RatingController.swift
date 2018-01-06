@@ -1,3 +1,11 @@
+//
+//  ratingStackView.swift
+//  IAFUHospital
+//
+//  Created by Mohamed on 12/12/17.
+//  Copyright © 2017 Mohamed. All rights reserved.
+//
+
 import UIKit
 
 class RatingController: UIStackView {
@@ -6,9 +14,13 @@ class RatingController: UIStackView {
     var starsFilledPicName = "starfill" // change it to your filled star picture name
     override func draw(_ rect: CGRect) {
         let myViews = self.subviews.filter{$0 is UIButton}
+        var starTag = 1
         for theView in myViews {
             if let theButton = theView as? UIButton{
+                theButton.setImage(UIImage(named: starsEmptyPicName), for: .normal)
                 theButton.addTarget(self, action: #selector(self.pressed(sender:)), for: .touchUpInside)
+                theButton.tag = starTag
+                starTag = starTag + 1
             }
         }
     }
@@ -26,3 +38,4 @@ class RatingController: UIStackView {
         }
     }
 }
+
