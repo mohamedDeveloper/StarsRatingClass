@@ -1,9 +1,9 @@
 //
-//  ratingStackView.swift
-//  IAFUHospital
+//  RatingController.swift
 //
-//  Created by Mohamed on 12/12/17.
-//  Copyright © 2017 Mohamed. All rights reserved.
+//
+//  Created by mohamed al-ghamdi on 17/04/2018.
+//  Copyright © 2018 mohamed al-ghamdi. All rights reserved.
 //
 
 import UIKit
@@ -13,29 +13,32 @@ class RatingController: UIStackView {
     var starsEmptyPicName = "star" // change it to your empty star picture name
     var starsFilledPicName = "starfill" // change it to your filled star picture name
     override func draw(_ rect: CGRect) {
-        let myViews = self.subviews.filter{$0 is UIButton}
+        let starButtons = self.subviews.filter{$0 is UIButton}
         var starTag = 1
-        for theView in myViews {
-            if let theButton = theView as? UIButton{
-                theButton.setImage(UIImage(named: starsEmptyPicName), for: .normal)
-                theButton.addTarget(self, action: #selector(self.pressed(sender:)), for: .touchUpInside)
-                theButton.tag = starTag
+        for button in starButtons {
+            if let button = button as? UIButton{
+                button.setImage(UIImage(named: starsEmptyPicName), for: .normal)
+                button.addTarget(self, action: #selector(self.pressed(sender:)), for: .touchUpInside)
+                button.tag = starTag
                 starTag = starTag + 1
             }
         }
+       setStarsRating(rating:starsRating)
     }
-    @objc func pressed(sender: UIButton) {
-        starsRating = sender.tag
-        let myViews = self.subviews.filter{$0 is UIButton}
-        for theView in myViews {
-            if let theButton = theView as? UIButton{
-                if theButton.tag > sender.tag {
-                    theButton.setImage(UIImage(named: starsEmptyPicName), for: .normal)
+    func setStarsRating(rating:Int){
+        self.starsRating = rating
+        let stackSubViews = self.subviews.filter{$0 is UIButton}
+        for subView in stackSubViews {
+            if let button = subView as? UIButton{
+                if button.tag > starsRating {
+                    button.setImage(UIImage(named: starsEmptyPicName), for: .normal)
                 }else{
-                    theButton.setImage(UIImage(named: starsFilledPicName), for: .normal)
+                    button.setImage(UIImage(named: starsFilledPicName), for: .normal)
                 }
             }
         }
     }
+    @objc func pressed(sender: UIButton) {
+        setStarsRating(rating: sender.tag)
+    }
 }
-
